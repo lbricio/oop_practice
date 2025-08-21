@@ -32,3 +32,35 @@ void Item::setPrice(double newPrice) {
 void Item::setCategorie(IDiscount* newCategorie) {
     this->_categorie = newCategorie;
 }
+
+double Item::getFinalDiscount(int quantity) const {
+    std::string dis = _discount;
+
+    if (dis.find('+') != dis.npos) {
+        int bought = stoi(dis.substr(0, dis.find('+')));
+        int promo = stoi(dis.substr(dis.find('+') + 1));
+        int extra = (quantity / (bought + promo)) * promo;
+        return extra * _price;
+    }
+
+    int percent = stoi(dis.substr(0, dis.find('%')));
+    int discount = std::max(percent, _categorie->getBestDiscount());
+    return ((quantity * _price * discount)/100);
+}
+
+double Item::getFinalPrice(int quantity) const {
+    std::string dis = _discount;
+
+    if (dis.find('+') != dis.npos) {
+        int bought = stoi(dis.substr(0, dis.find('+')));
+        int promo = stoi(dis.substr(dis.find('+') + 1));
+        int extra = (quantity / (bought + promo)) * promo;
+        return (quantity * _price) - (extra * _price);
+    }
+
+    int percent = stoi(dis.substr(0, dis.find('%')));
+    int discount = std::max(percent, _categorie->getBestDiscount());
+    return ((quantity * _price) - ((quantity * _price * discount)/100));
+}
+
+

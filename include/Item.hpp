@@ -1,6 +1,7 @@
 #pragma once
 #include <vector>
 #include <string>
+#include <iostream>
 #include "Categorie.hpp"
 
 class IItem
@@ -15,6 +16,8 @@ public:
     virtual void setPrice(double newPrice) = 0;
     virtual void setCategorie(IDiscount* newCategorie) = 0;
     virtual double getBestDiscount() const = 0;
+    virtual double getFinalPrice(int quantity) const = 0;
+    virtual double getFinalDiscount(int quantity) const = 0;
 };
 
 class Item : public IItem
@@ -36,4 +39,6 @@ public:
     void setPrice(double newPrice) override;
     void setCategorie(IDiscount* newCategorie) override;
     double getBestDiscount() const override;
+    double getFinalPrice(int quantity) const override;
+    double getFinalDiscount(int quantity) const override;
 };

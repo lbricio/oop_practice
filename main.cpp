@@ -10,8 +10,8 @@ int main() {
     Categorie* Veg = new Categorie(5, Produce);
 
     Categorie* Dairy = new Categorie(15);
-    Categorie* Milk = new Categorie(18, Produce);
-    Categorie* Cheese = new Categorie(5, Produce);
+    Categorie* Milk = new Categorie(20, Produce);
+    Categorie* Cheese = new Categorie(20, Produce);
 
     std::unordered_map<std::string, Item> itens = {
         {"Apple", Item("Apple", 50, Fruits, "3+1")},
@@ -29,7 +29,7 @@ int main() {
     std::string token;
 
     ss << "Apple 6Kg, Orange 2Kg, Potato 14Kg, Tomato 3Kg, Cow_Milk 8Lt, Gouda 2Kg";
-
+    
     while(std::getline(ss, token, ' ')) {
         std::string item = token;
         std::getline(ss, token, ' ');
@@ -43,17 +43,15 @@ int main() {
 
     for (const auto &[name, quantity] : bought_itens) {
         Item& item = itens.at(name);
-        double price = item.getPrice() * quantity;
-        double saved = item.getCategorie()->getBestDiscount();
-        total_price += price;
-        total_saved += saved;
+        total_price += item.getFinalPrice(quantity);
+        total_saved += item.getFinalDiscount(quantity);
+        std::cout << name << "price: " << (item.getPrice() * quantity) << " (-" << item.getFinalDiscount(quantity) << ")" << std::endl;
     }
-    std::cout << "price: " << total_price - total_saved << std::endl;
+    std::cout << "-----------------" << std::endl;
+    std::cout << "price: " << total_price << std::endl;
     std::cout << "saved: " << total_saved << std::endl;
 
     return (0);
 }
 
-// TO-DO: fazer logica do 3 por 1
-// TO-DO: comparar desconto do item com desconto da categoria
 // TO-DO: fazer testes com o _discount do item
